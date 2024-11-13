@@ -24,19 +24,41 @@ INSERT INTO `connections` (`connections_id`, `station_id_from`, `station_id_to`)
 (2,	8,	11),
 (3,	14,	4);
 
+DROP TABLE IF EXISTS `hub_stations`;
+CREATE TABLE `hub_stations` (
+  `hub_station_id` int(11) NOT NULL AUTO_INCREMENT,
+  `hub_id` int(11) NOT NULL,
+  `station_id` int(11) NOT NULL,
+  PRIMARY KEY (`hub_station_id`),
+  UNIQUE KEY `hub_id_station_id` (`hub_id`,`station_id`),
+  KEY `station_id` (`station_id`),
+  CONSTRAINT `hub_stations_ibfk_1` FOREIGN KEY (`hub_id`) REFERENCES `hub_transfers` (`hub_id`),
+  CONSTRAINT `hub_stations_ibfk_2` FOREIGN KEY (`station_id`) REFERENCES `stations` (`station_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `hub_transfers`;
+CREATE TABLE `hub_transfers` (
+  `hub_id` int(11) NOT NULL AUTO_INCREMENT,
+  `hub_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`hub_id`),
+  UNIQUE KEY `hub_name` (`hub_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 DROP TABLE IF EXISTS `lines`;
 CREATE TABLE `lines` (
   `line_id` int(11) NOT NULL AUTO_INCREMENT,
   `line_name` varchar(100) NOT NULL,
-  `color` varchar(7) NOT NULL DEFAULT '#000000',
+  `color` varchar(20) NOT NULL,
   PRIMARY KEY (`line_id`),
   UNIQUE KEY `line_name` (`line_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `lines` (`line_id`, `line_name`, `color`) VALUES
-(1,	'Red Line',	'#FF0000'),
-(2,	'Blue Line',	'#0000FF'),
-(3,	'Green Line',	'#008000');
+(1,	'Red Line',	'Red'),
+(2,	'Blue Line',	'Blue'),
+(3,	'Green Line',	'Green');
 
 DROP TABLE IF EXISTS `line_stations`;
 CREATE TABLE `line_stations` (
@@ -92,4 +114,4 @@ INSERT INTO `stations` (`station_id`, `station_name`) VALUES
 (13,	'Zahisnykiv Ukrayiny'),
 (5,	'Zavod im.Malysheva');
 
--- 2024-11-10 15:29:31
+-- 2024-11-13 07:49:08
